@@ -1,0 +1,15 @@
+version: 2.1
+
+jobs:
+  tf-plan-apply:
+    docker:
+      - image: cimg/python:3.13.2
+    resource_class: small
+    steps:
+      - checkout
+      - run: echo "hello"
+
+workflows:
+  gcp-terraform:
+    jobs:
+      - tf-plan-apply
