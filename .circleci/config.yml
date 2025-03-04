@@ -85,4 +85,5 @@ jobs:
 workflows:
   gcp-terraform:
     jobs:
-      - tf-plan-apply
+      - tf-plan-apply:
+          filters: pipeline.git.branch == "main"
