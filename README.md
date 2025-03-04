@@ -1,1 +1,2 @@
-# circleci-oidc-gcp-terraform
+# Terraform for setting CircleCI OIDC GCP roles
+
