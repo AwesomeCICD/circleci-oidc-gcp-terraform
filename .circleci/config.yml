@@ -1,13 +1,72 @@
 version: 2.1
 
+orbs:
+  gcp-cli: circleci/gcp-cli@3.2.2
+  terraform: circleci/terraform@3.6.0
+
+parameters:
+  gcp-project-number:
+    type: string
+    default: "676320558565"
+  gcp-project-id:    
+    default: "dev-vijay-pandian"
+    type: string
+  oidc-wip-pool:
+    type: string
+    default: "vijay-circleci-oidc-pool"
+  oidc-wip-provider:
+    type: string
+    default: "oidc-cci-standalone"
+  gcp-sa:
+    type: string
+    default: "vijay-ca-service-account@dev-vijay-pandian.iam.gserviceaccount.com"
+  resource-class:
+    type: string
+    default: "small"
+  terraform-version:
+    type: string
+    default: "1.8.4"
+  python-version:
+    type: string
+    default: "3.13.2"
+
+executors:
+  docker-default:
+    docker:
+      - image: cimg/python:<<pipeline.parameters.python-version>>
+    resource_class: <<pipeline.parameters.resource-class>>
+    environment: &common_env
+      GOOGLE_PROJECT_NUMBER: << pipeline.parameters.gcp-project-number >>
+      GOOGLE_PROJECT_ID: << pipeline.parameters.gcp-project-number >>
+      OIDC_WIP_PROVIDER_ID: << pipeline.parameters.oidc-wip-provider >>
+      OIDC_WIP_ID: << pipeline.parameters.oidc-wip-pool >>
+      OIDC_SERVICE_ACCOUNT_EMAIL: << pipeline.parameters.gcp-sa >>
+
+  default:
+    machine:
+      image: ubuntu-2404:current
+    environment: *common_env
+
+commands:
+  setup-oidc:
+    steps:
+      - gcp-cli/setup:
+           use_oidc: true
+           google_project_number: GOOGLE_PROJECT_ID
+           google_project_id: GOOGLE_PROJECT_ID
+           workload_identity_pool_id: OIDC_WIP_ID
+           workload_identity_pool_provider_id: OIDC_WIP_PROVIDER_ID
+           service_account_email: OIDC_SERVICE_ACCOUNT_EMAIL
+
 jobs:
   tf-plan-apply:
-    docker:
-      - image: cimg/python:3.13.2
-    resource_class: small
+    executor: docker-default
     steps:
       - checkout
-      - run: echo "hello"
+      - terraform/install:
+          arch: amd64
+          os: linux
+          terraform_version: 1.8.4
 
 workflows:
   gcp-terraform:
