@@ -69,7 +69,7 @@ jobs:
           os: linux
           terraform_version: 1.8.4
       - run:
-          name: Initialize Terraform and run Plan
+          name: Initialize Terraform and generate plan
           command: |
              cd terraform
              terraform init -input=false
