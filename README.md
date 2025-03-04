@@ -3,17 +3,22 @@
 ## Overview
 This Terraform script provisions a Google Cloud Platform (GCP) service account, configures IAM roles, and sets up Workload Identity Pool for CircleCI integration. The infrastructure state is managed in a Google Cloud Storage (GCS) bucket.
 
-## Resources Created
-- **Service Account:** A new GCP service account for Terraform usage.
-- **IAM Role Assignment:** Assigns `roles/owner` to the service account.
-- **Workload Identity Pool & Provider:** Configures workload identity for secure authentication with CircleCI.
-- **GCS Backend:** Stores Terraform state in a GCP storage bucket.
+## Resources Created using this config
+
+- **Service Account:** A new GCP service account for Terraform usage. 
+- **IAM Role Assignment:** Roles required to perform GCP functions via CircleCI are assigned to the service account.
+- **Workload Identity Pool & Provider:** Configures workload identity for secure authentication with CircleCI. This template can be leveraged to allow more fine-grained permissions to users running CircleCI pipelines (At this time, the ability to restrict access based on an `organization-id`/`project-id`/`vcs-branch`/`context`/`user-id` is possible. 
+- **GCS Backend:** For storing the Terraform state in a GCS bucket.
 
 ## Prerequisites
-Ensure the following are set up before applying the Terraform script:
-- Google Cloud SDK installed and configured.
-- A GCP project created.
-- Terraform installed (`>=1.8.0`).
+
+Before running the Terraform script, ensure the following are set up:
+
+- [`gCloud CLI`](https://cloud.google.com/sdk/docs/install) is installed and configured.
+- Access to a GCP project is available.
+- Terraform (>=1.8.0) is installed.
+
+Additionally, you can fork, modify, and reuse the provided [config.yml](https://github.com/AwesomeCICD/circleci-oidc-gcp-terraform/blob/main/.circleci/config.yml) file to apply the Terraform configuration via CircleCI.
 
 ## Variables
 The Terraform script uses several variables. Below are the key ones:
