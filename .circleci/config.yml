@@ -63,6 +63,7 @@ jobs:
     executor: docker-default
     steps:
       - checkout
+      - setup-oidc
       - terraform/install:
           arch: amd64
           os: linux
