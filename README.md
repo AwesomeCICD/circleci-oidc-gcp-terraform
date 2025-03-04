@@ -67,7 +67,70 @@ graph TD;
   B -->|Manages State| G[GCS Terraform State Bucket];
 ```
 
-## Notes
-- Ensure you have appropriate permissions to create and manage IAM roles.
-- Workload Identity Pools allow external authentication, reducing the need for service account keys.
-- The Terraform state is stored in a GCS bucket for team collaboration and remote state management.
+## Sample CircleCI Pipeline for GCP Projects
+
+```
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@3.2.2
+  terraform: circleci/terraform@3.6.0
+
+parameters:
+  build-image:
+    type: boolean
+    default: false
+  gcp-project-number:
+    type: string
+    default: "999999999999"
+  gcp-project-id:    
+    default: "awesome-ci-gcp"
+    type: string
+  oidc-wip-pool:
+    type: string
+    default: "circleci-oidc-pool"
+  oidc-wip-provider:
+    type: string
+    default: "circleci-cci-standalone"
+  gcp-sa:
+    type: string
+    default: "circleci-demo-service-account@dev-vijay-pandian.iam.gserviceaccount.com"
+
+executors:
+  docker-default:
+    docker:
+      - image: cimg/python:3.13.2
+    resource_class: small
+    environment:
+      GOOGLE_PROJECT_NUMBER: << pipeline.parameters.gcp-project-number >>
+      GOOGLE_PROJECT_ID: << pipeline.parameters.gcp-project-number >>
+      OIDC_WIP_PROVIDER_ID: << pipeline.parameters.oidc-wip-provider >>
+      OIDC_WIP_ID: << pipeline.parameters.oidc-wip-pool >>
+      OIDC_SERVICE_ACCOUNT_EMAIL: << pipeline.parameters.gcp-sa >>
+
+
+commands:
+  setup-oidc:
+    steps:
+      - gcp-cli/setup:
+           use_oidc: true
+           google_project_number: GOOGLE_PROJECT_ID
+           google_project_id: GOOGLE_PROJECT_ID
+           workload_identity_pool_id: OIDC_WIP_ID
+           workload_identity_pool_provider_id: OIDC_WIP_PROVIDER_ID
+           service_account_email: OIDC_SERVICE_ACCOUNT_EMAIL
+
+jobs:
+  list-gcs-buckets:
+    executor: docker-default
+    steps:
+      - setup-oidc
+      - run: 
+          name: list GCS buckets
+          command: gsutil ls
+
+workflows:
+  gcp-oidc-demo:
+    jobs:
+      - list-gcs-buckets
+```
