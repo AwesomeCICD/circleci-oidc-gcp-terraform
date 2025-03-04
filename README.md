@@ -13,8 +13,7 @@ This Terraform script provisions a Google Cloud Platform (GCP) service account, 
 Ensure the following are set up before applying the Terraform script:
 - Google Cloud SDK installed and configured.
 - A GCP project created.
-- Terraform installed (`>=1.0.0`).
-- Necessary API services enabled (`iam.googleapis.com`, `cloudresourcemanager.googleapis.com`, `storage.googleapis.com`).
+- Terraform installed (`>=1.8.0`).
 
 ## Variables
 The Terraform script uses several variables. Below are the key ones:
