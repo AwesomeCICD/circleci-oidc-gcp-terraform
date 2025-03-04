@@ -13,7 +13,7 @@ terraform {
 }
 
 provider "google" {
-  project = "676320558565"
+  project = var.project_id
   region  = "northamerica-northeast2"
   zone    = "northamerica-northeast2-a"
 }
