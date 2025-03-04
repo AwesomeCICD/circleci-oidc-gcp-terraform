@@ -67,6 +67,12 @@ jobs:
           arch: amd64
           os: linux
           terraform_version: 1.8.4
+      - run:
+          name: Initialize Terraform and run Plan
+          command: |
+             cd terraform
+             terraform init -input=false
+             terraform plan -out tfapply -var="project_id=$GOOGLE_PROJECT_NUMBER"
 
 workflows:
   gcp-terraform:

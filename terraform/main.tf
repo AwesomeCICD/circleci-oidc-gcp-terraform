@@ -12,6 +12,12 @@ terraform {
   }
 }
 
+variable "project_id" {
+  type = number
+  description = "GCP project ID"
+}
+
+
 provider "google" {
   project = var.project_id
   region  = "northamerica-northeast2"
