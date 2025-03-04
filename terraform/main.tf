@@ -40,7 +40,9 @@ output "service_account_attributes" {
     display_name = data.google_service_account.terraform_sa_account.display_name
     member       = data.google_service_account.terraform_sa_account.member
   }
-}variable "circleci_server_domain" {
+}
+
+variable "circleci_server_domain" {
   type    = string
   #default = "server4.fieldeng-spehereci.com"
   default = "server-rc.gke.sphereci.com"
@@ -77,6 +79,8 @@ variable "workload_identity_pool_id" {
     type = string
     default = "vijay-server47-pool"
 }
+
+
 import {
   id = "projects/${var.project_id}/locations/global/workloadIdentityPools/${var.workload_identity_pool_id}"
   to = google_iam_workload_identity_pool.cci_server_472_wip_pool
