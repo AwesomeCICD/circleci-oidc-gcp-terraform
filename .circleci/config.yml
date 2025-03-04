@@ -74,10 +74,13 @@ jobs:
              cd terraform
              terraform init -input=false
              terraform plan -out tfapply -var="gcp_project_number=$GOOGLE_PROJECT_NUMBER"
+             ls -lah
       - run:
           when: on_success
           name: Apply Terraform
-          command: terraform apply -auto-approve tfapply           
+          command: |
+            cd terraform
+            terraform apply -auto-approve tfapply           
 
 workflows:
   gcp-terraform:
