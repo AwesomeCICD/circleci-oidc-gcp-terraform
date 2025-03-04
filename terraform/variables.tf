@@ -1,5 +1,5 @@
 
-variable "project_number" {
+variable "gcp_project_number" {
   type    = number
   default = 676320558565
 }

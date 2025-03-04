@@ -73,7 +73,7 @@ jobs:
           command: |
              cd terraform
              terraform init -input=false
-             terraform plan -out tfapply -var="project_id=$GOOGLE_PROJECT_NUMBER"
+             terraform plan -out tfapply -var="gcp_project_number=$GOOGLE_PROJECT_NUMBER"
 
 workflows:
   gcp-terraform:
