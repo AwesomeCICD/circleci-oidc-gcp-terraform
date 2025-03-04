@@ -1,22 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.8.0"
-    }
-  }
-
-  backend "gcs" {
-    bucket = "vijay-tf-state-gcp"
-    prefix = "terraform/state"
-  }
-}
-
-provider "google" {
-  project = var.project_id
-  region  = "northamerica-northeast2"
-  zone    = "northamerica-northeast2-a"
-}
 
 
 data "google_storage_bucket" "tf_state_bucket" {
@@ -56,10 +37,7 @@ variable "circleci_oidc_org_id" {
   default = "62ab4513-c6aa-4646-8189-a498fdbdb0d1"
 }
 
-variable "project_id" {
-  type    = number
-  default = 676320558565
-}
+
 
 variable "workload_pool_provider_id" {
     type = string
