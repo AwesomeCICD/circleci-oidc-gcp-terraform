@@ -14,7 +14,7 @@ resource "google_iam_workload_identity_pool_provider" "pool" {
   description                        = "Identity pool provider for OIDC setup in CCI Server 4.7.2"
   disabled                           = false
   attribute_mapping = {
-    "attribute.project" = "assertion['${var.circleci_server_domain}/']"
+    "attribute.project" = "assertion['${var.circleci_server_domain}/${var.circleci_project_id}']"
     "attribute.org_id"  = "assertion.aud"
     "google.subject"    = "assertion.sub"
   }
